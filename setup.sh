@@ -31,13 +31,18 @@ detect_os() {
 install_debian() {
   export DEBIAN_FRONTEND=noninteractive
   apt-get update
-  apt-get install -y build-essential wget curl git zip unzip vim net-tools iputils-ping dnsutils netcat-traditional gpg passwd fonts-firacode pkg-config libssl-dev tmux ripgrep sed jq tree btop zsh
+  apt-get install -y build-essential wget curl git zip unzip vim net-tools iputils-ping dnsutils netcat-traditional gpg passwd fonts-firacode pkg-config libssl-dev tmux ripgrep sed jq tree btop zsh nodejs lua luarocks python3
 }
 
 install_fedora() {
   dnf upgrade -y
   dnf groupinstall -y "Development Tools"
-  dnf install -y wget curl git zip unzip vim net-tools iputils bind-utils nmap-ncat gnupg passwd fira-code-fonts pkg-config openssl-devel tmux ripgrep sed jq tree btop zsh
+  dnf install -y wget curl git zip unzip vim net-tools iputils bind-utils nmap-ncat gnupg passwd fira-code-fonts pkg-config openssl-devel tmux ripgrep sed jq tree btop zsh nodejs lua luarocks python3
+}
+
+setup_tmux() {
+  git clone https://github.com/a-mader/mozart409-tmux.git "$HOME/.config/tmux"
+  git clone https://github.com/tmux-plugins/tpm "$HOME/.config/tmux/plugins/tpm"
 }
 
 main() {
@@ -47,9 +52,11 @@ main() {
   case "$detected_os" in
     debian)
       install_debian
+      setup_tmux
       ;;
     fedora)
       install_fedora
+      setup_tmux 
       ;;
     *)
       echo "OS not detected." >&2

@@ -1,8 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -euo pipefail
-
-clear
 
 echo "Setting up new server..."
 
@@ -31,18 +29,26 @@ detect_os() {
 install_debian() {
   export DEBIAN_FRONTEND=noninteractive
   apt-get update
-  apt-get install -y build-essential wget curl git zip unzip vim net-tools iputils-ping dnsutils netcat-traditional gpg passwd fonts-firacode pkg-config libssl-dev tmux ripgrep sed jq tree btop zsh nodejs lua luarocks python3
+  apt-get install -y build-essential wget curl git zip unzip vim net-tools iputils-ping dnsutils netcat-traditional gpg passwd fonts-firacode pkg-config libssl-dev tmux ripgrep sed jq tree btop zsh nodejs lua5.4 luarocks python3
+  add-apt-repository ppa:neovim-ppa/stable
+  apt-get update
+  apt-get install neovim
 }
 
 install_fedora() {
-  dnf upgrade -y
-  dnf groupinstall -y "Development Tools"
+  dnf update -y
   dnf install -y wget curl git zip unzip vim net-tools iputils bind-utils nmap-ncat gnupg passwd fira-code-fonts pkg-config openssl-devel tmux ripgrep sed jq tree btop zsh nodejs lua luarocks python3
+  dnf copr enable agriffis/neovim-nightly
+  dnf install -y neovim python3-neovim
 }
 
 setup_tmux() {
   git clone https://github.com/a-mader/mozart409-tmux.git "$HOME/.config/tmux"
   git clone https://github.com/tmux-plugins/tpm "$HOME/.config/tmux/plugins/tpm"
+}
+
+setup_neovim(){
+   git clone https://github.com/a-mader/mozart409-nvim.git ~/.config/nvim
 }
 
 main() {
@@ -53,10 +59,12 @@ main() {
     debian)
       install_debian
       setup_tmux
+      setup_neovim 
       ;;
     fedora)
       install_fedora
       setup_tmux 
+      setup_neovim 
       ;;
     *)
       echo "OS not detected." >&2

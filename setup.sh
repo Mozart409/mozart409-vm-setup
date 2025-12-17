@@ -29,10 +29,7 @@ detect_os() {
 install_debian() {
   export DEBIAN_FRONTEND=noninteractive
   apt-get update
-  apt-get install -y build-essential wget curl git zip unzip vim net-tools iputils-ping dnsutils netcat-traditional gpg passwd fonts-firacode pkg-config libssl-dev tmux ripgrep sed jq tree btop zsh nodejs lua5.4 luarocks python3
-  add-apt-repository ppa:neovim-ppa/stable
-  apt-get update
-  apt-get install neovim
+  apt-get install -y build-essential wget curl git zip unzip vim net-tools iputils-ping dnsutils netcat-traditional gpg passwd fonts-firacode pkg-config libssl-dev tmux ripgrep sed jq tree btop zsh nodejs lua5.4 luarocks python3 ninja-build gettext cmake
 }
 
 install_fedora() {
@@ -49,6 +46,15 @@ setup_tmux() {
 
 setup_neovim(){
    git clone https://github.com/a-mader/mozart409-nvim.git ~/.config/nvim
+   git clone https://github.com/neovim/neovim /tmp/neovim
+   cd /tmp/neovim
+   git checkout stable
+   make CMAKE_BUILD_TYPE=RelWithDebInfo
+   cd build
+   cpack -G DEB
+   dpkg -i nvim-linux-*.deb
+   cd /
+   rm -rf /tmp/neovim
 }
 
 main() {

@@ -26,6 +26,12 @@ detect_os() {
   printf 'unknown\n'
 }
 
+install_rust() {
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  export PATH="$HOME/.cargo/bin:$PATH"
+  rustup default nightly 
+}
+
 install_debian() {
   export DEBIAN_FRONTEND=noninteractive
   apt-get update
@@ -34,7 +40,7 @@ install_debian() {
 
 install_fedora() {
   dnf update -y
-  dnf install -y wget curl git zip unzip vim net-tools iputils bind-utils nmap-ncat gnupg passwd fira-code-fonts pkg-config openssl-devel tmux ripgrep sed jq tree btop zsh nodejs lua luarocks python3
+  dnf install -y wget curl git zip unzip vim net-tools iputils bind-utils nmap-ncat gnupg passwd fira-code-fonts pkg-config openssl-devel tmux ripgrep sed jq tree btop zsh nodejs lua luarocks python3 ninja-build cmake gcc gcc-c++ make
   dnf copr enable agriffis/neovim-nightly
   dnf install -y neovim python3-neovim
 }
@@ -64,11 +70,13 @@ main() {
   case "$detected_os" in
     debian)
       install_debian
+      install_rust
       setup_tmux
       setup_neovim 
       ;;
     fedora)
       install_fedora
+      install_rust
       setup_tmux 
       setup_neovim 
       ;;

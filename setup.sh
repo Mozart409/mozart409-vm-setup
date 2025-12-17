@@ -68,9 +68,9 @@ setup_neovim() {
 setup_zsh() {
 	wget -O ~/.zshrc https://raw.githubusercontent.com/Mozart409/mozart409-vm-setup/refs/heads/main/zsh/zshrc
 	curl -s https://ohmyposh.dev/install.sh | bash -s
-	exec zsh
-
 	oh-my-posh font install iosevka
+	chsh -s $(which zsh)
+	exec zsh
 }
 
 main() {

@@ -1,7 +1,7 @@
 default:
     just --choose
 
-build os: clear fmt
+build os: clear 
     docker build --file Dockerfile.{{os}} --tag mozart409-vm-setup:{{os}} .
 
 run os:
@@ -10,5 +10,5 @@ run os:
 clear:
     clear
 
-fmt: 
+fmt:
     shfmt -l -w setup.sh

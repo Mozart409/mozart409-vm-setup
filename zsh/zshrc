@@ -1,0 +1,23 @@
+ alias l="ls -lah";
+ alias lg="lazygit";
+ alias ld="lazydocker";
+ alias sys="systemctl status";
+ alias syr="systemctl restart";
+ alias k="kubectl";
+ alias dps="docker compose ps";
+ alias dup="docker compose up -d --build --remove-orphans";
+ alias dwn="docker compose down";
+ alias n="nvim .";
+
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt EXTENDED_HISTORY
+setopt HIST_IGNORE_DUPS
+HISTSIZE=5000
+SAVEHIST=5000
+setopt HIST_SAVE_NO_DUPS
+setopt SHARE_HISTORY
+
+
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+  eval "$(oh-my-posh init zsh --config 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/jandedobbeleer.omp.json')"
+fi
